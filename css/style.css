@@ -1,0 +1,22 @@
+/* utilities */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+body{
+    font-family: 'Poppins', sans-serif;
+}
+
+/* error messages styles */
+.fa-xmark{
+    color: red;
+    font-weight: 700;
+    font-size: 20px;
+    padding-right: 5px;
+}
+
+.error-message{
+    padding: 5px;
+    text-align: center;
+    border-radius: 24px;
+    background-color: #fecaca;
+    display: none;
+}
