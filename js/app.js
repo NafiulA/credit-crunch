@@ -29,14 +29,14 @@ function saveCalculation() {
 
 //this function takes an id and displays the error message  for that id (if any)
 function errorMessage(errorID) {
-    const allErrors = ["string-error", "negative-error", "exceed-error", "saving-error"]
+    const allErrors = document.getElementsByClassName("error-message");
 
     for (const eachError of allErrors) {
-        if (eachError == (errorID + "-error")) {
+        if (eachError.id == (errorID + "-error")) {
             document.getElementById(errorID + "-error").style.display = "block";
         }
         else {
-            document.getElementById(eachError).style.display = "none";
+            document.getElementById(eachError.id).style.display = "none";
         }
     }
     if ((errorID + "-error") == "no-error") {
