@@ -1,3 +1,4 @@
+// this function returns the value of input fields
 function getInputValue(fieldId) {
     const inputField = document.getElementById(fieldId + "-input");
     const inputFieldText = inputField.value;
@@ -5,6 +6,7 @@ function getInputValue(fieldId) {
     return inputFieldValue;
 }
 
+// this function calculates and returns the value of total expense
 function getTotalExpense() {
     const rentValue = getInputValue("rent");
     const foodValue = getInputValue("food");
@@ -15,6 +17,7 @@ function getTotalExpense() {
     return totalExpense;
 }
 
+// this function calculates and returns the value of saving amount
 function saveCalculation() {
     const savingValue = getInputValue("saving");
     const incomeValue = getInputValue("income");
@@ -24,39 +27,28 @@ function saveCalculation() {
     return savingAmount;
 }
 
+//this function takes an id and displays the error message  for that id (if any)
 function errorMessage(errorID) {
-    if ((errorID + "-error") == "string-error") {
-        document.getElementById("string-error").style.display = "block";
-        document.getElementById("negative-error").style.display = "none";
-        document.getElementById("exceed-error").style.display = "none";
-        document.getElementById("saving-error").style.display = "none";
+    const allErrors = ["string-error", "negative-error", "exceed-error", "saving-error"]
+
+    for (const eachError of allErrors) {
+        if (eachError == (errorID + "-error")) {
+            document.getElementById(errorID + "-error").style.display = "block";
+        }
+        else {
+            document.getElementById(eachError).style.display = "none";
+        }
     }
-    else if ((errorID + "-error") == "negative-error") {
-        document.getElementById("string-error").style.display = "none";
-        document.getElementById("negative-error").style.display = "block";
-        document.getElementById("exceed-error").style.display = "none";
-        document.getElementById("saving-error").style.display = "none";
-    }
-    else if ((errorID + "-error") == "exceed-error") {
-        document.getElementById("string-error").style.display = "none";
-        document.getElementById("negative-error").style.display = "none";
-        document.getElementById("exceed-error").style.display = "block";
-        document.getElementById("saving-error").style.display = "none";
-    }
-    else if ((errorID + "-error") == "saving-error") {
-        document.getElementById("string-error").style.display = "none";
-        document.getElementById("negative-error").style.display = "none";
-        document.getElementById("exceed-error").style.display = "none";
-        document.getElementById("saving-error").style.display = "block";
-    }
-    else if ((errorID + "-error") == "no-error") {
+    if ((errorID + "-error") == "no-error") {
         document.getElementById("string-error").style.display = "none";
         document.getElementById("negative-error").style.display = "none";
         document.getElementById("exceed-error").style.display = "none";
         document.getElementById("saving-error").style.display = "none";
     }
+
 }
 
+// calculate button event listener
 document.getElementById("calculate-btn").addEventListener("click", function () {
     const incomeValue = getInputValue("income");
     const rentValue = getInputValue("rent");
@@ -81,6 +73,7 @@ document.getElementById("calculate-btn").addEventListener("click", function () {
     }
 })
 
+//save button event listener
 document.getElementById("save-btn").addEventListener("click", function () {
 
     const savingValue = getInputValue("saving");
