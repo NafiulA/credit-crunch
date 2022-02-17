@@ -38,6 +38,15 @@ function inputValidate() {
     }
 }
 
+function saveCalculation() {
+    const savingValue = getInputValue("saving");
+    const incomeValue = getInputValue("income");
+
+    const savingAmount = (savingValue * incomeValue) / 100;
+
+    return savingAmount;
+}
+
 document.getElementById("calculate-btn").addEventListener("click", function () {
     inputValidate();
     const incomeValue = getInputValue("income");
@@ -52,7 +61,27 @@ document.getElementById("calculate-btn").addEventListener("click", function () {
     else {
         const balance = incomeValue - totalExpenseValue;
         document.getElementById("balance-value").innerText = balance;
-        document.getElementById("remaining-balance-value").innerText = balance;
         document.getElementById("exceed-error").style.display = "none";
+    }
+})
+
+document.getElementById("save-btn").addEventListener("click", function () {
+    inputValidate();
+    const savingAmount = saveCalculation();
+
+    const balanceText = document.getElementById("balance-value").innerText;
+    const balanceValue = parseFloat(balanceText);
+
+    if (savingAmount > balanceValue) {
+        document.getElementById("saving-error").style.display = "block";
+    }
+    else {
+        document.getElementById("saving-value").innerText = savingAmount;
+
+        const remainingBalance = balanceValue - savingAmount;
+
+        document.getElementById("remaining-balance-value").innerText = remainingBalance;
+
+        document.getElementById("saving-error").style.display = "none";
     }
 })
