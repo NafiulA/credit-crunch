@@ -15,29 +15,6 @@ function getTotalExpense() {
     return totalExpense;
 }
 
-function inputValidate() {
-    const rentValue = getInputValue("rent");
-    const foodValue = getInputValue("food");
-    const clothesValue = getInputValue("clothes");
-    const incomeValue = getInputValue("income");
-    const savingValue = getInputValue("saving");
-
-    if (isNaN(rentValue) == true || isNaN(foodValue) == true || isNaN(clothesValue) == true || isNaN(incomeValue) == true || isNaN(savingValue) == true) {
-        document.getElementById("string-error").style.display = "block"
-        document.getElementById("negative-error").style.display = "none"
-    }
-    else if (rentValue < 0 || foodValue < 0 || clothesValue < 0 || incomeValue < 0 || savingValue < 0) {
-        document.getElementById("string-error").style.display = "none"
-        document.getElementById("negative-error").style.display = "block"
-    }
-    else {
-        const totalExpenseValue = getTotalExpense();
-        document.getElementById("total-expense-value").innerText = totalExpenseValue;
-        document.getElementById("string-error").style.display = "none"
-        document.getElementById("negative-error").style.display = "none"
-    }
-}
-
 function saveCalculation() {
     const savingValue = getInputValue("saving");
     const incomeValue = getInputValue("income");
@@ -47,33 +24,78 @@ function saveCalculation() {
     return savingAmount;
 }
 
+function errorMessage(errorID) {
+    if ((errorID + "-error") == "string-error") {
+        document.getElementById("string-error").style.display = "block";
+        document.getElementById("negative-error").style.display = "none";
+        document.getElementById("exceed-error").style.display = "none";
+        document.getElementById("saving-error").style.display = "none";
+    }
+    else if ((errorID + "-error") == "negative-error") {
+        document.getElementById("string-error").style.display = "none";
+        document.getElementById("negative-error").style.display = "block";
+        document.getElementById("exceed-error").style.display = "none";
+        document.getElementById("saving-error").style.display = "none";
+    }
+    else if ((errorID + "-error") == "exceed-error") {
+        document.getElementById("string-error").style.display = "none";
+        document.getElementById("negative-error").style.display = "none";
+        document.getElementById("exceed-error").style.display = "block";
+        document.getElementById("saving-error").style.display = "none";
+    }
+    else if ((errorID + "-error") == "saving-error") {
+        document.getElementById("string-error").style.display = "none";
+        document.getElementById("negative-error").style.display = "none";
+        document.getElementById("exceed-error").style.display = "none";
+        document.getElementById("saving-error").style.display = "block";
+    }
+    else if ((errorID + "-error") == "no-error") {
+        document.getElementById("string-error").style.display = "none";
+        document.getElementById("negative-error").style.display = "none";
+        document.getElementById("exceed-error").style.display = "none";
+        document.getElementById("saving-error").style.display = "none";
+    }
+}
+
 document.getElementById("calculate-btn").addEventListener("click", function () {
-    inputValidate();
     const incomeValue = getInputValue("income");
     const rentValue = getInputValue("rent");
     const foodValue = getInputValue("food");
     const clothesValue = getInputValue("clothes");
     const totalExpenseValue = getTotalExpense();
 
-    if (rentValue > incomeValue || foodValue > incomeValue || clothesValue > incomeValue || totalExpenseValue > incomeValue) {
-        document.getElementById("exceed-error").style.display = "block";
+    if (isNaN(rentValue) == true || isNaN(foodValue) == true || isNaN(clothesValue) == true || isNaN(incomeValue) == true) {
+        errorMessage("string");
+    }
+    else if (rentValue < 0 || foodValue < 0 || clothesValue < 0 || incomeValue < 0) {
+        errorMessage("negative");
+    }
+    else if (rentValue > incomeValue || foodValue > incomeValue || clothesValue > incomeValue || totalExpenseValue > incomeValue) {
+        errorMessage("exceed");
     }
     else {
+        document.getElementById("total-expense-value").innerText = totalExpenseValue;
         const balance = incomeValue - totalExpenseValue;
         document.getElementById("balance-value").innerText = balance;
-        document.getElementById("exceed-error").style.display = "none";
+        errorMessage("no");
     }
 })
 
 document.getElementById("save-btn").addEventListener("click", function () {
-    inputValidate();
-    const savingAmount = saveCalculation();
 
+    const savingValue = getInputValue("saving");
+    const savingAmount = saveCalculation();
     const balanceText = document.getElementById("balance-value").innerText;
     const balanceValue = parseFloat(balanceText);
 
-    if (savingAmount > balanceValue) {
-        document.getElementById("saving-error").style.display = "block";
+    if (isNaN(savingValue) == true) {
+        errorMessage("string");
+    }
+    else if (savingValue < 0) {
+        errorMessage("negative");
+    }
+    else if (savingAmount > balanceValue) {
+        errorMessage("saving");
     }
     else {
         document.getElementById("saving-value").innerText = savingAmount;
@@ -82,6 +104,6 @@ document.getElementById("save-btn").addEventListener("click", function () {
 
         document.getElementById("remaining-balance-value").innerText = remainingBalance;
 
-        document.getElementById("saving-error").style.display = "none";
+        errorMessage("no");
     }
 })
